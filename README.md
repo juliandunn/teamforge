@@ -1,55 +1,29 @@
 teamforge Cookbook
 ==================
 
-Configures the CollabNet TeamForge client.
+Installs and configures CollabNet TeamForge Server or the command line client.
 
 Requirements
 ------------
 
+TeamForge Server is supported on RedHat Enterprise Linux 6.x, CentOS 6.x, or SuSE Linux Enterprise Server 11.
+
 Attributes
 ----------
 
-#### teamforge::cli
-<table>
-  <tr>
-    <th>Key</th>
-    <th>Type</th>
-    <th>Description</th>
-    <th>Default</th>
-  </tr>
-  <tr>
-    <td><tt>['teamforge']['cli']</tt></td>
-    <td>Boolean</td>
-    <td>whether to include bacon</td>
-    <td><tt>true</tt></td>
-  </tr>
-</table>
+Not yet written
 
 Usage
 -----
-#### teamforge::cli
-TODO: Write usage instructions for each cookbook.
 
-e.g.
-Just include `teamforge` in your node's `run_list`:
-
-```json
-{
-  "name":"my_node",
-  "run_list": [
-    "recipe[teamforge]"
-  ]
-}
-```
+Not yet written
 
 Contributing
 ------------
-TODO: (optional) If this is a public cookbook, detail the process for contributing. If this is a private cookbook, remove this section.
 
-e.g.
 1. Fork the repository on Github
 2. Create a named feature branch (like `add_component_x`)
-3. Write you change
+3. Write your change
 4. Write tests for your change (if applicable)
 5. Run the tests, ensuring they all pass
 6. Submit a Pull Request using Github
