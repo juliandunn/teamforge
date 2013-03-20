@@ -17,4 +17,6 @@
 # limitations under the License.
 #
 
+include_recipe "iptables"
+
 iptables_rule "port_teamforge"
