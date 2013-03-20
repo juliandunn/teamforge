@@ -6,6 +6,6 @@ description      'Installs/Configures CollabNet TeamForge'
 long_description IO.read(File.join(File.dirname(__FILE__), 'README.md'))
 version          '0.1.0'
 
-%w{dmg yum}.each do |cb|
+%w{dmg iptables yum}.each do |cb|
   depends cb
 end
