@@ -22,6 +22,7 @@ default['teamforge']['server']['local_features'] = %w{app database cvs subversio
 default['teamforge']['server']['version'] = '6.2.0.1'
 default['teamforge']['server']['install_dir'] = "/opt/collabnet/teamforge-installer/#{node['teamforge']['server']['version']}"
 default['teamforge']['server']['scm_default_shared_secret'] = nil
+default['teamforge']['server']['listen_ports'] = [ '80' ]
 
 default['teamforge']['codesight']['public_site_name'] = node['fqdn']
 default['teamforge']['codesight']['ssl'] = false
