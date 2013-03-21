@@ -16,26 +16,17 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-node.default['teamforge']['server']['local_features'] = %w{app etl database datamart subversion cvs codesearch}
-
-include_recipe 'teamforge::server'
-
 package 'teamforge-codesearch' do
   action :install
 end
 
-replace_or_add "BDCS_HOST in site-options.conf" do
-  path '/opt/collabnet/teamforge-installer/6.2.0.1/conf/site-options.conf'
-  pattern "BDCS_HOST=.*"
-  line "BDCS_HOST=#{node['teamforge']['codesight']['public_site_name']}"
-  action :edit
-end
+# TODO: 
+# 1. Use node search to find the actual Teamforge server, populate the
+#    site-options.conf on this box with that information
+# 2. Run the installer in unattended mode
+#
+# All directions are here: http://help.collab.net/topic/sysadmin-620/action/redhat_blackduck-install.html
 
-if node['teamforge']['codesight']['ssl']
-  replace_or_add "BDCS_host in site-options.conf" do
-    path '/opt/collabnet/teamforge-installer/6.2.0.1/conf/site-options.conf'
-    pattern "BDCS_SSL=.*"
-    line 'BDCS_SSL=on'
-    action :edit
-  end
+service 'tomcatcs' do
+  action [:enable, :start]
 end
