@@ -75,7 +75,7 @@ end
 
 service "collabnet" do
   supports :status => true, :start => true, :stop => true, :restart => true
-  action :enable
+  action [:enable, :start]
 end
 
 execute "bootstrap-data" do
@@ -86,8 +86,4 @@ execute "bootstrap-data" do
   # "collabnet" service in a broken state... so after bootstrap data runs,
   # restart it
   notifies :restart, "service[collabnet]"
-end
-
-service "collabnet" do
-  action :start
 end
