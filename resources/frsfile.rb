@@ -25,6 +25,7 @@ attribute :frsid, :kind_of => String, :default => nil
 attribute :ctf, :kind_of => String, :default => 'cocn'
 
 attr_accessor :exists
+attr_accessor :checksum
 
 def initialize(*args)
   super

@@ -18,37 +18,16 @@
 # limitations under the License.
 #
 
-use_inline_resources
+require 'tempfile'
+require 'tmpdir'
+require 'chef/digester'
+require 'chef/mixin/shell_out'
+
+include Chef::Mixin::ShellOut
 
 # Support whyrun
 def whyrun_supported?
   true
-end
-
-action :create do
-  unless @current_resource.exists
-
-    template "/tmp/get-payload-frsid#{new_resource.frsid}.ctf" do
-      cookbook "teamforge"
-      source "get-payload.ctf.erb"
-      owner "root"
-      group "root"
-      variables(
-        :ctf => new_resource.ctf,
-        :frsid => new_resource.frsid
-      )
-      action :create
-      notifies :run, "execute[get-payload-from-frs]"
-    end
-      
-    execute "get-payload-from-frs" do
-      command "#{node['teamforge']['cli']['prog']} --script /tmp/get-payload-frsid#{new_resource.frsid}.ctf"
-      cwd ::File.dirname(new_resource.filename)
-      action :nothing
-    end
-  else
-    Chef::Log.debug("#{@new_resource} already exists - nothing to do")
-  end
 end
 
 def load_current_resource
@@ -57,7 +36,49 @@ def load_current_resource
 
   if ::File.exists?(@current_resource.filename)
     @current_resource.exists = true
+    @current_resource.checksum = Chef::Digester.checksum_for_file(@current_resource.filename)
   else
     @current_resource.exists = false
   end
+end
+
+action :create do
+
+  f = Tempfile.new(['get-payload', '.ctf'])
+  begin
+    f.puts ("connect #{new_resource.ctf}")
+    f.puts ("go #{new_resource.frsid}")
+    f.puts ("download")
+  ensure
+    f.close
+  end
+
+  d = Dir.mktmpdir
+
+  shell_out!(payload_retrieval_command(node['teamforge']['cli']['prog'], d, f.path))
+  f.unlink
+
+  downloaded_filename = ::File.join(d, ::File.basename(new_resource.filename))
+
+  if !::File.exists?(downloaded_filename)
+    Chef::Log.fatal("Failed to retrieve file from FRS")
+  else
+    new_resource.checksum = Chef::Digester.checksum_for_file(downloaded_filename)
+
+    if !@current_resource.exists || (current_resource.checksum != new_resource.checksum)
+      ::File.rename(downloaded_filename, new_resource.filename)
+      new_resource.updated_by_last_action(true)
+    else
+      ::File.delete(downloaded_filename)
+    end
+  end
+
+  Dir.rmdir(d)
+
+end
+
+private
+
+def payload_retrieval_command (ctfprog, dir, script)
+  %Q{cd #{dir} && #{ctfprog} --script #{script}}
 end
