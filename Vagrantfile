@@ -64,13 +64,14 @@ Vagrant::Config.run do |config|
         }
       },
       :yum => {
-        :proxy => 'http://10.0.2.2:3128'
+        :proxy => 'http://squid:3128'
       }
     }
 
     chef.run_list = [
       "recipe[yum::yum]",
-      "recipe[teamforge::server]"
+      "recipe[teamforge::server]",
+      "recipe[minitest-handler::default]"
     ]
   end
 end
