@@ -42,6 +42,11 @@ else
   Chef::Log.fatal("CollabNet TeamForge Server is only supported on RHEL/CentOS or SuSE Linux distributions.")
 end
 
+# Teamforge expects unzip to be on systems but doesn't declare it as a RPM dep
+package "unzip" do
+  action :install
+end
+
 package "teamforge" do
   action :install
 end

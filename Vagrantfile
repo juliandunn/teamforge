@@ -16,8 +16,8 @@ Vagrant::Config.run do |config|
 
   config.vm.host_name = "teamforge-berkshelf"
 
-  config.vm.box = "centos-6.3"
-  config.vm.box_url = "https://dl.dropbox.com/u/47541301/vagrantboxes/centos-6.3.box"
+  config.vm.box = "centos-6.4"
+  config.vm.box_url = "https://dl.dropboxusercontent.com/u/47541301/vagrantboxes/centos-6.4.box"
 
   # Boot with a GUI so you can see the screen. (Default is headless)
   # config.vm.boot_mode = :gui
@@ -64,7 +64,7 @@ Vagrant::Config.run do |config|
         }
       },
       :yum => {
-        :proxy => 'http://squid:3128'
+        :proxy => 'http://10.0.2.2:3128'
       }
     }
 
