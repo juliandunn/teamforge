@@ -36,4 +36,12 @@ describe 'teamforge::server' do
     end
   end
 
+  describe "links and files" do
+    it "creates a symlink from /etc/sourceforge.properties" do
+      # Yes, that extra slash is significant, because of what the TeamForge installer does
+      link("/etc/sourceforge.properties").must_exist.with(:link_type, :symbolic).and(:to, "/opt/collabnet/teamforge//runtime/conf/sourceforge.properties")
+      assert_symlinked_file "/etc/sourceforge.properties", "root", "root", 0644
+    end
+  end
+
 end
