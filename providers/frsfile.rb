@@ -18,6 +18,7 @@
 # limitations under the License.
 #
 
+require 'fileutils'
 require 'tempfile'
 require 'tmpdir'
 require 'chef/digester'
@@ -66,7 +67,7 @@ action :create do
     new_resource.checksum = Chef::Digester.checksum_for_file(downloaded_filename)
 
     if !@current_resource.exists || (current_resource.checksum != new_resource.checksum)
-      ::File.rename(downloaded_filename, new_resource.filename)
+      FileUtils.mv(downloaded_filename, new_resource.filename)
       new_resource.updated_by_last_action(true)
     else
       ::File.delete(downloaded_filename)
