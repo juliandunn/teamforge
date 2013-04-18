@@ -39,7 +39,7 @@ when 'suse'
   end
 
 else
-  Chef::Log.fatal("CollabNet TeamForge Server is only supported on RHEL/CentOS or SuSE Linux distributions.")
+  Chef::Log.fatal("CollabNet TeamForge Server is only supported on RHEL/CentOS or SuSE Linux distributions, and you are on #{node['platform_family']}")
 end
 
 # Teamforge expects unzip to be on systems but doesn't declare it as a RPM dep
@@ -53,10 +53,12 @@ end
 
 if Chef::Config[:solo]
   if node['teamforge']['server']['scm_default_shared_secret'].nil?
-    Chef::Application.fatal!('You must set the scm_default_shared_secret in Solo mode.')
+    Chef::Log.fatal('You must set the scm_default_shared_secret in Solo mode.')
+    return
   end
   if node['teamforge']['server']['scm_default_shared_secret'].length < 16 || node['teamforge']['server']['scm_default_shared_secret'].length > 24
-    Chef::Application.fatal!('SCM default secret must be between 16-24 characters.')
+    Chef::Log.fatal('SCM default secret must be between 16-24 characters.')
+    return
   end
 else
   node.set_unless['teamforge']['server']['scm_default_shared_secret'] = (0...24).map{ ('a'..'z').to_a[rand(26)] }.join
