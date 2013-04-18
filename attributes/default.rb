@@ -27,7 +27,7 @@ default['teamforge']['server']['listen_ports'] = [ '80' ]
 default['teamforge']['codesight']['public_site_name'] = node['fqdn']
 default['teamforge']['codesight']['ssl'] = false
 
-case platform_family
+case node['platform_family']
 when 'rhel'
   default['teamforge']['cli']['frsid'] = node['kernel']['machine'] == 'x86_64' ? 'frs8161' : 'frs8162'
   default['teamforge']['cli']['checksum'] = node['kernel']['machine'] == 'x86_64' ? 'fde8b5d74caf05b0460f42a7d8820d37' : '928a387c49f89eb1437baee28cb86beb'
