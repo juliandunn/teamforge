@@ -3,7 +3,7 @@ require 'spec_helper'
 describe 'teamforge::server' do
 
   it 'should install a package called teamforge' do
-    chef_run = ChefSpec::ChefRunner.new({'platform' => 'centos', 'version' => '6.3'})
+    chef_run = ChefSpec::ChefRunner.new({:platform => 'centos', :version => '6.3'})
     # Don't know why platform_family isn't included in the fauxhai mock
     chef_run.node.automatic_attrs['platform_family'] = 'rhel'
     # Set a secret to avoid errors
