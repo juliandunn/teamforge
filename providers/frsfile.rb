@@ -67,8 +67,9 @@ action :create do
     new_resource.checksum = Chef::Digester.checksum_for_file(downloaded_filename)
 
     if !@current_resource.exists || (current_resource.checksum != new_resource.checksum)
-      FileUtils.mv(downloaded_filename, new_resource.filename)
-      new_resource.updated_by_last_action(true)
+      converge_by("old checksum doesn't match new one") do
+        FileUtils.mv(downloaded_filename, new_resource.filename)
+      end
     else
       ::File.delete(downloaded_filename)
     end
